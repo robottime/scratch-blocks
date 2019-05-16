@@ -75,6 +75,9 @@ module.exports = [{
         from: 'blocks_vertical',
         to: 'playgrounds/blocks_vertical',
       }, {
+        from: 'generators',
+        to: 'playgrounds/generators',
+      }, {
         from: 'core',
         to: 'playgrounds/core'
       }, {
