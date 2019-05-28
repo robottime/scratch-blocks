@@ -585,46 +585,46 @@ def exclude_horizontal(item):
   return not item.endswith("block_render_svg_horizontal.js")
 
 if __name__ == "__main__":
-  try:
-    closure_dir = CLOSURE_DIR_NPM
-    closure_root = CLOSURE_ROOT_NPM
-    closure_library = CLOSURE_LIBRARY_NPM
-    closure_compiler = CLOSURE_COMPILER_NPM
+  # try:
+  #   closure_dir = CLOSURE_DIR_NPM
+  #   closure_root = CLOSURE_ROOT_NPM
+  #   closure_library = CLOSURE_LIBRARY_NPM
+  #   closure_compiler = CLOSURE_COMPILER_NPM
 
-    # Load calcdeps from the local library
+  #   # Load calcdeps from the local library
+  #   calcdeps = import_path(os.path.join(
+  #       closure_root, closure_library, "closure", "bin", "calcdeps.py"))
+
+  #   # Sanity check the local compiler
+  #   test_args = [closure_compiler, os.path.join("build", "test_input.js")]
+  #   test_proc = subprocess.Popen(test_args, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+  #   (stdout, _) = test_proc.communicate()
+  #   assert stdout == read(os.path.join("build", "test_expect.js"))
+
+  #   print("Using local compiler: google-closure-compiler ...\n")
+  # except (ImportError, AssertionError):
+  print("Using remote compiler: closure-compiler.appspot.com ...\n")
+
+  try:
+    closure_dir = CLOSURE_DIR
+    closure_root = CLOSURE_ROOT
+    closure_library = CLOSURE_LIBRARY
+    closure_compiler = CLOSURE_COMPILER
+
     calcdeps = import_path(os.path.join(
         closure_root, closure_library, "closure", "bin", "calcdeps.py"))
-
-    # Sanity check the local compiler
-    test_args = [closure_compiler, os.path.join("build", "test_input.js")]
-    test_proc = subprocess.Popen(test_args, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    (stdout, _) = test_proc.communicate()
-    assert stdout == read(os.path.join("build", "test_expect.js"))
-
-    print("Using local compiler: google-closure-compiler ...\n")
-  except (ImportError, AssertionError):
-    print("Using remote compiler: closure-compiler.appspot.com ...\n")
-
-    try:
-      closure_dir = CLOSURE_DIR
-      closure_root = CLOSURE_ROOT
-      closure_library = CLOSURE_LIBRARY
-      closure_compiler = CLOSURE_COMPILER
-
-      calcdeps = import_path(os.path.join(
-          closure_root, closure_library, "closure", "bin", "calcdeps.py"))
-    except ImportError:
-      if os.path.isdir(os.path.join(os.path.pardir, "closure-library-read-only")):
-        # Dir got renamed when Closure moved from Google Code to GitHub in 2014.
-        print("Error: Closure directory needs to be renamed from"
-              "'closure-library-read-only' to 'closure-library'.\n"
-              "Please rename this directory.")
-      elif os.path.isdir(os.path.join(os.path.pardir, "google-closure-library")):
-        print("Error: Closure directory needs to be renamed from"
-             "'google-closure-library' to 'closure-library'.\n"
-             "Please rename this directory.")
-      else:
-        print("""Error: Closure not found.  Read this:
+  except ImportError:
+    if os.path.isdir(os.path.join(os.path.pardir, "closure-library-read-only")):
+      # Dir got renamed when Closure moved from Google Code to GitHub in 2014.
+      print("Error: Closure directory needs to be renamed from"
+            "'closure-library-read-only' to 'closure-library'.\n"
+            "Please rename this directory.")
+    elif os.path.isdir(os.path.join(os.path.pardir, "google-closure-library")):
+      print("Error: Closure directory needs to be renamed from"
+            "'google-closure-library' to 'closure-library'.\n"
+            "Please rename this directory.")
+    else:
+      print("""Error: Closure not found.  Read this:
   developers.google.com/blockly/guides/modify/web/closure""")
       sys.exit(1)
 
